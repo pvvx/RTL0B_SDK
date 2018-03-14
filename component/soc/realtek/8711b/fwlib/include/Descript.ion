@@ -1,0 +1,3 @@
+hal_platform.h REGS...
+rtl8710b_sys_on.h REG_SYS_xx
+rtl8711b_peri_on.h REGS..
