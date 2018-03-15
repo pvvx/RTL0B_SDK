@@ -112,7 +112,7 @@ flash_ota1:
 .PHONY: flash_ota2
 flash_ota2:
 	@$(PYTHON)	$(GCCMK_PATH)rtltool.py -p $(COM_PORT) wf 0x80000 $(BIN_DIR)/$(IMAGE2_OTA2)	
-
+	
 .PHONY: flash_boot
 flash_boot:
 	@$(PYTHON)	$(GCCMK_PATH)rtltool.py -p $(COM_PORT) wf 0x00000 $(BIN_DIR)/boot_all.bin

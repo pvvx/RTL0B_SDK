@@ -334,6 +334,8 @@ dhcp_select(struct netif *netif)
 /**
  * The DHCP timer that checks for lease renewal/rebind timeouts.
  */
+extern void igmp_report_groups_leave(struct netif *netif);
+
 void
 dhcp_coarse_tmr()
 {
@@ -354,7 +356,6 @@ dhcp_coarse_tmr()
       if (++netif->dhcp->lease_used == netif->dhcp->t0_timeout) {
         LWIP_DEBUGF(DHCP_DEBUG | LWIP_DBG_TRACE | LWIP_DBG_STATE, ("dhcp_coarse_tmr(): t0 timeout\n"));
         /* this clients' lease time has expired */
-extern void igmp_report_groups_leave(struct netif *netif);
         igmp_report_groups_leave(netif);	// not remove group to make able to report group when dhcp bind
         dhcp_release(netif);
         netif->dhcp->seconds_elapsed = sys_now();        
@@ -1030,7 +1031,7 @@ dhcp_bind(struct netif *netif)
 
   ip_addr_copy(gw_addr, dhcp->offered_gw_addr);
   /* gateway address not given? */
-  if (_ip_addr_isany(&gw_addr)) {
+  if (ip_addr_isany(&gw_addr)) {
     /* copy network address */
     ip_addr_get_network(&gw_addr, &dhcp->offered_ip_addr, &sn_mask);
     /* use first host address on network as gateway */

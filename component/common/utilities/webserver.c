@@ -1258,7 +1258,7 @@ void start_web_server()
 	webs_terminate = 0;
 	if(webs_task == NULL)
 	{
-		if(xTaskCreate(vBasicWEBServer, (const char *)"web_server", STACKSIZE, NULL, tskIDLE_PRIORITY + 1, &webs_task) != pdPASS)
+		if(xTaskCreate(vBasicWEBServer, (const char *)"web_srv", STACKSIZE, NULL, tskIDLE_PRIORITY + 1, &webs_task) != pdPASS)
 			printf("\n\rWEB: Create webserver task failed!\n");
 	}
 	if(webs_sema == NULL)

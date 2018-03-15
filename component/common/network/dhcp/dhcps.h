@@ -36,8 +36,10 @@
 #define DHCP_MESSAGE_HTYPE 				(1)
 #define DHCP_MESSAGE_HLEN  				(6)
 
-//#define DHCP_SERVER_PORT  				(67)
-//#define DHCP_CLIENT_PORT  				(68)
+#ifndef DHCP_CLIENT_PORT
+#define DHCP_CLIENT_PORT  68
+#define DHCP_SERVER_PORT  67
+#endif
 
 #define DHCP_MESSAGE_TYPE_DISCOVER  			(1)
 #define DHCP_MESSAGE_TYPE_OFFER     			(2)
@@ -71,10 +73,7 @@
 #define HW_ADDRESS_LENGTH				(6)
 
 /* Reference by RFC 2131 */
-#if 1
-#include "lwip/dhcp.h"
-#else
-struct dhcp_msg {
+struct dhcps_msg {
 	uint8_t op; 		/* Message op code/message type. 1 = BOOTREQUEST, 2 = BOOTREPLY */
 	uint8_t	htype;		/* Hardware address type */
 	uint8_t hlen;		/* Hardware address length */
@@ -98,7 +97,6 @@ struct dhcp_msg {
 			           null in DHCPDISCOVER, fully qualified directory-path name in DHCPOFFER.*/
 	uint8_t options[312];   /* Optional parameters field. reference the RFC 2132 */
 };
-#endif
 /* use this to check whether the message is dhcp related or not */
 static const uint8_t dhcp_magic_cookie[4] = {99, 130, 83, 99};
 static const uint8_t dhcp_option_lease_time[] = {0x00, 0x00, 0x1c, 0x20}; //1 day

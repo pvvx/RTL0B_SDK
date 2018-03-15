@@ -141,15 +141,15 @@ SECTIONS
 		__flash_text_start__ = .;
 
 		*(.img2_custom_signature*)
-
 		*(.text*)    
-		*(.rodata*)
 
+		. = ALIGN (4);
 		UartLogMonCmdTable = .;
 		KEEP(*(SORT(.mon.tab*)))
 		UartLogMonCmdTable_end = .;
 		LONG(0)
-		
+
+		*(.rodata*)
 		*(.debug_trace*)
 
 		__flash_text_end__ = .;

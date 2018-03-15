@@ -475,6 +475,8 @@ extern const u32 __AES_rcon[];
 //
 // ROM functions
 //
+extern HAL_CRYPTO_ADAPTER g_rtl_cipherEngine;
+#define rtl_cryptoEngine_deinit() CRYPTO_DeInit(&g_rtl_cipherEngine) // not work ?
 
 extern _LONG_CALL_ void CRYPTO_AlignToBe32(u32 *pData, int bytes4_num );
 extern _LONG_CALL_ void CRYPTO_MemDump(const u8 *start, u32 size, char * strHeader);

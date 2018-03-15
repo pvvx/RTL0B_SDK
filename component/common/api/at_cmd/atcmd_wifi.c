@@ -785,9 +785,9 @@ void fATWA(void *arg){
 	
 #if CONFIG_LWIP_LAYER
 	dhcps_deinit();
-	IP4_ADDR(&ipaddr, GW_ADDR0, GW_ADDR1, GW_ADDR2, GW_ADDR3);
-	IP4_ADDR(&netmask, NETMASK_ADDR0, NETMASK_ADDR1 , NETMASK_ADDR2, NETMASK_ADDR3);
-	IP4_ADDR(&gw, GW_ADDR0, GW_ADDR1, GW_ADDR2, GW_ADDR3);
+	IP4_ADDR(&ipaddr, AP_GW_ADDR0, AP_GW_ADDR1, AP_GW_ADDR2, AP_GW_ADDR3);
+	IP4_ADDR(&netmask, AP_NETMASK_ADDR0, AP_NETMASK_ADDR1 , AP_NETMASK_ADDR2, AP_NETMASK_ADDR3);
+	IP4_ADDR(&gw, AP_GW_ADDR0, AP_GW_ADDR1, AP_GW_ADDR2, AP_GW_ADDR3);
 	netif_set_addr(pnetif, &ipaddr, &netmask,&gw);
 #ifdef CONFIG_DONT_CARE_TP
 	pnetif->flags |= NETIF_FLAG_IPSWITCH;
@@ -1304,6 +1304,7 @@ void fATWw(void *arg){
 	argv[argc++] = arg;
 	cmd_ap_wps(argc, argv);
 #endif		
+	printf("Please set CONFIG_ENABLE_WPS_AP 1 in platform_opts.h to enable ATWw command\n");
 }
 
 #if CONFIG_ENABLE_P2P

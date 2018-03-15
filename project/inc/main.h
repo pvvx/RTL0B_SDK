@@ -15,10 +15,10 @@ void wlan_network();
 
 /* WLAN and Netork */
 #define STA_MODE_SSID	"ap"    /* Set SSID here */
-#define AP_MODE_SSID		"wlan_ap_ssid"    /* Set SSID here */
+#define AP_MODE_SSID	"wlan_ap_ssid"    /* Set SSID here */
 #define AP_DEFAULT_CH	6
 #define WLAN0_NAME		"wlan0"
-#define WLAN1_NAME      	"wlan1"
+#define WLAN1_NAME      "wlan1"
 #define WPA_PASSPHRASE	"1234567890" /* Max 32 cahracters */
 #define WEP40_KEY		{0x12, 0x34, 0x56, 0x78, 0x90}
 
@@ -78,10 +78,12 @@ extern unsigned char ap_ip[4], ap_netmask[4], ap_gw[4];
 
 #else
 
+/*******************************************/
+
 /*Static IP ADDRESS*/
 #define IP_ADDR0   192
 #define IP_ADDR1   168
-#define IP_ADDR2   1
+#define IP_ADDR2   4
 #define IP_ADDR3   80
 
 /*NETMASK*/
@@ -93,10 +95,8 @@ extern unsigned char ap_ip[4], ap_netmask[4], ap_gw[4];
 /*Gateway Address*/
 #define GW_ADDR0   192
 #define GW_ADDR1   168
-#define GW_ADDR2   1
+#define GW_ADDR2   4
 #define GW_ADDR3   1
-
-/*******************************************/
 
 /*Static IP ADDRESS*/
 #define AP_IP_ADDR0   192

@@ -5,6 +5,7 @@ ifneq ($(shell uname), Linux)
 COM_PORT ?= COM6
 else
 COM_PORT = /dev/ttyS6
+#sudo chmod 666 $(COM_PORT) !
 endif
 FLASHER_TYPE = UART
 #=============================================

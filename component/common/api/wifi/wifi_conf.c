@@ -90,30 +90,6 @@ extern unsigned char dhcp_mode_sta;
 #endif
 
 /*Static IP ADDRESS*/
-#ifndef IP_ADDR0
-#define IP_ADDR0   192
-#define IP_ADDR1   168
-#define IP_ADDR2   1
-#define IP_ADDR3   80
-#endif
-
-/*NETMASK*/
-#ifndef NETMASK_ADDR0
-#define NETMASK_ADDR0   255
-#define NETMASK_ADDR1   255
-#define NETMASK_ADDR2   255
-#define NETMASK_ADDR3   0
-#endif
-
-/*Gateway Address*/
-#ifndef GW_ADDR0
-#define GW_ADDR0   192
-#define GW_ADDR1   168
-#define GW_ADDR2   1
-#define GW_ADDR3   1
-#endif
-
-/*Static IP ADDRESS*/
 #ifndef AP_IP_ADDR0
 #define AP_IP_ADDR0   192
 #define AP_IP_ADDR1   168
@@ -1722,9 +1698,9 @@ int wifi_restart_ap(
 	else
 #endif
 	{
-		IP4_ADDR(&ipaddr, GW_ADDR0, GW_ADDR1, GW_ADDR2, GW_ADDR3);
-		IP4_ADDR(&netmask, NETMASK_ADDR0, NETMASK_ADDR1 , NETMASK_ADDR2, NETMASK_ADDR3);
-		IP4_ADDR(&gw, GW_ADDR0, GW_ADDR1, GW_ADDR2, GW_ADDR3);
+		IP4_ADDR(&ipaddr, AP_GW_ADDR0, AP_GW_ADDR1, AP_GW_ADDR2, AP_GW_ADDR3);
+		IP4_ADDR(&netmask, AP_NETMASK_ADDR0, AP_NETMASK_ADDR1 , AP_NETMASK_ADDR2, AP_NETMASK_ADDR3);
+		IP4_ADDR(&gw, AP_GW_ADDR0, AP_GW_ADDR1, AP_GW_ADDR2, AP_GW_ADDR3);
 		netif_set_addr(pnetif, &ipaddr, &netmask,&gw);
 		wifi_off();
 		vTaskDelay(20);

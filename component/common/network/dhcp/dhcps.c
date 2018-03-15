@@ -29,7 +29,7 @@ static struct ip_addr dhcps_owned_first_ip;
 static struct ip_addr dhcps_owned_last_ip;
 static uint8_t dhcps_num_of_available_ips;
 #endif
-static struct dhcp_msg *dhcp_message_repository;
+static struct dhcps_msg *dhcp_message_repository;
 static int dhcp_message_total_options_lenth;
 
 /* allocated IP range */  
@@ -139,11 +139,11 @@ static uint8_t check_client_request_ip(struct ip_addr *client_req_ip, uint8_t *h
 	if(i == DHCP_POOL_END+1)
 		ip_addr4 = 0;
 
+//Exit:
 	return ip_addr4;
 }
 
-#if (debug_dhcps)
-static void dump_client_table()
+void dump_client_table()
 {
 #if 0
 	int i;
@@ -160,7 +160,6 @@ static void dump_client_table()
 	printf("\r\n");
 #endif	
 }
-#endif	// debug_dhcps
 #endif //CONFIG_DHCPS_KEPT_CLIENT_INFO
 #endif
 
@@ -303,7 +302,7 @@ static void add_offer_options(uint8_t *option_start_address)
   * @param  m the pointer which point to the dhcp message store in.
   * @retval None.
   */
-static void dhcps_initialize_message(struct dhcp_msg *dhcp_message_repository)
+static void dhcps_initialize_message(struct dhcps_msg *dhcp_message_repository)
 {
      
         dhcp_message_repository->op = DHCP_MESSAGE_OP_REPLY;
@@ -315,23 +314,23 @@ static void dhcps_initialize_message(struct dhcp_msg *dhcp_message_repository)
         dhcp_message_repository->secs = 0;
         dhcp_message_repository->flags = htons(BOOTP_BROADCAST);         
 
-	memcpy((char *)dhcp_message_repository->yiaddr.addr,
-			(char *)&dhcps_allocated_client_address,
-				sizeof(dhcp_message_repository->yiaddr.addr));
+        memcpy(&dhcp_message_repository->yiaddr,
+			&dhcps_allocated_client_address,
+				sizeof(dhcp_message_repository->yiaddr));
         
-	memset((char *)dhcp_message_repository->ciaddr.addr, 0,
+		memset(&dhcp_message_repository->ciaddr, 0,
 					sizeof(dhcp_message_repository->ciaddr));
-        memset((char *)dhcp_message_repository->siaddr.addr, 0,
+        memset(&dhcp_message_repository->siaddr, 0,
 					sizeof(dhcp_message_repository->siaddr));
-        memset((char *)dhcp_message_repository->giaddr.addr, 0,
-					sizeof(dhcp_message_repository->giaddr.addr));
-        memset((char *)dhcp_message_repository->sname,  0,
+        memset(&dhcp_message_repository->giaddr, 0,
+					sizeof(dhcp_message_repository->giaddr));
+        memset(&dhcp_message_repository->sname,  0,
 					sizeof(dhcp_message_repository->sname));
-        memset((char *)dhcp_message_repository->file,   0,
+        memset(&dhcp_message_repository->file,   0,
 					sizeof(dhcp_message_repository->file));
-        memset((char *)dhcp_message_repository->options, 0,
+        memset(&dhcp_message_repository->options, 0,
 					dhcp_message_total_options_lenth);
-        memcpy((char *)dhcp_message_repository->options, (char *)dhcp_magic_cookie,
+        memcpy(&dhcp_message_repository->options, (char *)dhcp_magic_cookie,
 					sizeof(dhcp_magic_cookie));
 }
 
@@ -343,7 +342,7 @@ static void dhcps_initialize_message(struct dhcp_msg *dhcp_message_repository)
 static void dhcps_send_offer(struct pbuf *packet_buffer)
 {
 	uint8_t temp_ip = 0;
-	dhcp_message_repository = (struct dhcp_msg *)packet_buffer->payload;	
+	dhcp_message_repository = (struct dhcps_msg *)packet_buffer->payload;
 #if (!IS_USE_FIXED_IP) 	
 	temp_ip = check_client_request_ip(&client_request_ip, client_addr);
 	/* create new client ip */
@@ -358,7 +357,7 @@ static void dhcps_send_offer(struct pbuf *packet_buffer)
 		mark_ip_in_table((uint8_t)ip4_addr4(&dhcps_local_address));
 		printf("\r\n reset ip table!!\r\n");	
 #endif	
-		printf("\r\n No useable ip!!!!\r\n");
+		printf("\r\n No useable ip!\r\n");
 	}
 	printf("\n\r[%d]DHCP assign ip = %d.%d.%d.%d\n", xTaskGetTickCount(), ip4_addr1(&dhcps_network_id),ip4_addr2(&dhcps_network_id),ip4_addr3(&dhcps_network_id),temp_ip);
 	IP4_ADDR(&dhcps_allocated_client_address, (ip4_addr1(&dhcps_network_id)),
@@ -378,7 +377,7 @@ static void dhcps_send_offer(struct pbuf *packet_buffer)
   */
 static void dhcps_send_nak(struct pbuf *packet_buffer)
 {
-	dhcp_message_repository = (struct dhcp_msg *)packet_buffer->payload;
+	dhcp_message_repository = (struct dhcps_msg *)packet_buffer->payload;
 	dhcps_initialize_message(dhcp_message_repository);
 	add_msg_type(&dhcp_message_repository->options[4], DHCP_MESSAGE_TYPE_NAK);
 	udp_sendto_if(dhcps_pcb, packet_buffer,
@@ -392,7 +391,7 @@ static void dhcps_send_nak(struct pbuf *packet_buffer)
   */
 static void dhcps_send_ack(struct pbuf *packet_buffer)
 {
-	dhcp_message_repository = (struct dhcp_msg *)packet_buffer->payload;
+	dhcp_message_repository = (struct dhcps_msg *)packet_buffer->payload;
 	dhcps_initialize_message(dhcp_message_repository);
 	add_offer_options(add_msg_type(&dhcp_message_repository->options[4],
 			      			DHCP_MESSAGE_TYPE_ACK));
@@ -524,7 +523,7 @@ static uint8_t dhcps_handle_msg_options(uint8_t *option_start, int16_t total_opt
 static uint8_t dhcps_check_msg_and_handle_options(struct pbuf *packet_buffer)
 {
 	int dhcp_message_option_offset;
-	dhcp_message_repository = (struct dhcp_msg *)packet_buffer->payload;
+	dhcp_message_repository = (struct dhcps_msg *)packet_buffer->payload;
 	dhcp_message_option_offset = ((int)dhcp_message_repository->options 
 						- (int)packet_buffer->payload);
 	dhcp_message_total_options_lenth = (packet_buffer->len 
@@ -552,7 +551,7 @@ struct pbuf *udp_packet_buffer, struct ip_addr *sender_addr, uint16_t sender_por
   	int16_t total_length_of_packet_buffer;
 	struct pbuf *merged_packet_buffer = NULL;
 
-	dhcp_message_repository = (struct dhcp_msg *)udp_packet_buffer->payload;
+	dhcp_message_repository = (struct dhcps_msg *)udp_packet_buffer->payload;
 	if (udp_packet_buffer == NULL) {
 		printf("\n\r Error!!!! System doesn't allocate any buffer \n\r");
 		return;  
@@ -665,7 +664,7 @@ void dhcps_init(struct netif * pnetif)
 
 	dhcps_pcb = udp_new(); 
 	if (dhcps_pcb == NULL) {
-		printf("\n\r Error!!!upd_new error \n\r");
+		printf("\n\rdhcps: upd_new error \n\r");
 		return;
 	}
 	IP4_ADDR(&dhcps_send_broadcast_address, 255, 255, 255, 255);
@@ -731,6 +730,13 @@ void dhcps_init(struct netif * pnetif)
 	}
 	udp_bind(dhcps_pcb, IP_ADDR_ANY, DHCP_SERVER_PORT);
 	udp_recv(dhcps_pcb, dhcps_receive_udp_packet_handler, NULL);
+#if (debug_dhcps)
+	printf("\r\ndhcps_init: %d.%d.%d.%d\r\n",
+				ip4_addr1(&dhcps_local_address),
+				ip4_addr2(&dhcps_local_address),
+				ip4_addr3(&dhcps_local_address),
+				ip4_addr4(&dhcps_local_address));
+#endif
 }
 
 void dhcps_deinit(void)

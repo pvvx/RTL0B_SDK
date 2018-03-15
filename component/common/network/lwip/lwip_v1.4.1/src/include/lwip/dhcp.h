@@ -159,8 +159,10 @@ void dhcp_fine_tmr(void);
 #define DHCP_COOKIE_OFS   DHCP_MSG_LEN
 #define DHCP_OPTIONS_OFS  (DHCP_MSG_LEN + 4)
 
+#ifndef DHCP_CLIENT_PORT
 #define DHCP_CLIENT_PORT  68  
 #define DHCP_SERVER_PORT  67
+#endif
 
 /** DHCP client states */
 #define DHCP_OFF          0
