@@ -99,7 +99,7 @@ $(BOOT_O): %.o : %.c
 
 VPATH:=$(OBJ_DIR) $(SDK_PATH)
 
-#.PHONY: clean
+.PHONY: clean
 clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR) $(OBJ_DIR)/$(SDK_PATH) 
 

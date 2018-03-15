@@ -1,16 +1,16 @@
 #---------------------------
 # User defined (in userset.mk)
 #---------------------------
-SDK_PATH ?= ../RTL0B_SDK/
+SDK_PATH ?= ./
 ifneq ($(shell uname), Linux)
-GCC_PATH ?=~/gcc-arm-none-eabi-7-2017-q4-major/bin/
-PYTHON ?= python
-COM_PORT ?= /dev/ttyS2
-else
 GCC_PATH ?= d:/MCU/GNU_Tools_ARM_Embedded/7.2017-q4-major/bin/
 OPENOCD_PATH ?= d:/MCU/OpenOCD/bin/
 PYTHON ?= c:/Python27/python.exe
 COM_PORT ?= COM2
+else
+GCC_PATH ?=~/gcc-arm-none-eabi-7-2017-q4-major/bin/
+PYTHON ?= python
+COM_PORT ?= /dev/ttyS2
 endif
 FLASHER_TYPE ?= UART
 #---------------------------
@@ -36,3 +36,4 @@ ELFFILE ?= $(OBJ_DIR)/$(TARGET).axf
 
 # openocd tools
 OPENOCD ?= $(OPENOCD_PATH)openocd
+

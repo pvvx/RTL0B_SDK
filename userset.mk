@@ -2,9 +2,9 @@
 # Flasher Config
 #=============================================
 ifneq ($(shell uname), Linux)
-COM_PORT = /dev/ttyS6
-else
 COM_PORT ?= COM6
+else
+COM_PORT = /dev/ttyS6
 endif
 FLASHER_TYPE = UART
 #=============================================
