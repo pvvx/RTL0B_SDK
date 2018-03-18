@@ -11,12 +11,12 @@
 #include "analogin_api.h"
 #include "log_service.h"
 #include "atcmd_sys.h"
+#include "freertos_pmu.h"
 #include "main.h"
 #include "atcmd_wifi.h"
 
-#if defined(configUSE_WAKELOCK_PMU) && (configUSE_WAKELOCK_PMU == 1)
-#include "freertos_pmu.h"
-#endif
+void pmu_clean_wakelock_stat(void);
+void pmu_get_wakelock_hold_stats(char *pcWriteBuffer);
 
 extern u32 ConfigDebugErr;
 extern u32 ConfigDebugInfo;

@@ -104,39 +104,48 @@ clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR) $(OBJ_DIR)/$(SDK_PATH) 
 
 ifeq ($(FLASHER_TYPE), UART)
+
+wsl_opencom:
+ifdef USE_WSL
+	@sudo chmod 666 $(COM_PORT)
+endif
 	
 .PHONY: flash_ota1
-flash_ota1: 
+flash_ota1: wsl_opencom
 	@$(PYTHON)	$(GCCMK_PATH)rtltool.py -p $(COM_PORT) wf 0x0B000 $(BIN_DIR)/$(IMAGE2_OTA1)
 
 .PHONY: flash_ota2
-flash_ota2:
+flash_ota2: wsl_opencom
 	@$(PYTHON)	$(GCCMK_PATH)rtltool.py -p $(COM_PORT) wf 0x80000 $(BIN_DIR)/$(IMAGE2_OTA2)	
 	
 .PHONY: flash_boot
-flash_boot:
+flash_boot: wsl_opencom
 	@$(PYTHON)	$(GCCMK_PATH)rtltool.py -p $(COM_PORT) wf 0x00000 $(BIN_DIR)/boot_all.bin
 
 .PHONY: flash_sys
-flash_sys:
+flash_sys: wsl_opencom
 	@$(PYTHON)	$(GCCMK_PATH)rtltool.py -p $(COM_PORT) wf 0x09000 $(GCCMK_PATH)0x9000.bin
 
 .PHONY: run_ram
-run_ram:
+run_ram: wsl_opencom
 	@$(PYTHON)	$(GCCMK_PATH)rtltool.py -p $(COM_PORT) wm 0x10002000 $(BIN_DIR)/ram_1.r.bin
 	
 .PHONY: go_rom_monitor	
-go_rom_monitor:
+go_rom_monitor: wsl_opencom
 	@$(PYTHON)	$(GCCMK_PATH)rtltool.py -p $(COM_PORT) gm
 
 .PHONY: flash_read
-flash_read:
+flash_read: wsl_opencom
 	@$(PYTHON)	$(GCCMK_PATH)rtltool.py -p $(COM_PORT) rf 0x00000 0x100000 $(BIN_DIR)/flash.bin
 else
 ifeq ($(FLASHER_TYPE),Jlink)
 
+todo ...
+
 else
 ifeq ($(FLASHER_TYPE),cmsis-dap)
+
+todo ...
 
 endif
 endif

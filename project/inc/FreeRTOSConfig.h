@@ -158,7 +158,7 @@ extern int  freertos_ready_to_sleep();
 #define traceLOW_POWER_IDLE_END();              } while (0);
 
 /* It's FreeRTOS related feature but it's not included in FreeRTOS design. */
-#define configUSE_WAKELOCK_PMU                  1
+#define configUSE_WAKELOCK_PMU			1
 
 #endif // #if (__IASMARM__ != 1)
 
