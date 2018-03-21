@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+environment/project/0.40826557/PATH/delimiter=;
+environment/project/0.40826557/PATH/operation=append
+environment/project/0.40826557/PATH/value=c\:\\MinGW\\mingw64\\bin;C\:\\MinGW\\msys\\1.0\\bin;%PATH%
+environment/project/0.40826557/append=true
+environment/project/0.40826557/appendContributed=true
